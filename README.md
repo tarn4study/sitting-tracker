@@ -1,4 +1,4 @@
-# 🧘‍♂️ SitUp Cute Tracker
+# 🧘‍♂️ Sitting-Tracker
 
 A "kawaii" game-themed sitting session tracker designed to help you maintain healthy habits while working, reading, or gaming.
 
