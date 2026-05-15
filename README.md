@@ -64,7 +64,7 @@ You can self-host this app using Docker for a more permanent setup.
 #### Using Docker Compose (Recommended)
 1. Build and start the container:
    ```bash
-   docker-compose up -d --build
+   docker compose up -d --build
    ```
 2. Access the app at `http://localhost:5050`.
 
