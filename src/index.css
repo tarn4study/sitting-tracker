@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lavender-blush: #FFF0F5;
+  --color-sit-buddy-text: #5D4E56;
+  --color-buddy-pink: #FF6B8B;
+  --color-buddy-yellow: #FFD93D;
+}
+
+@layer base {
+  body {
+    @apply bg-lavender-blush text-sit-buddy-text;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #FFB6C1;
+    border-radius: 10px;
+    border: 2px solid white;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #FF6B8B;
+  }
+}
