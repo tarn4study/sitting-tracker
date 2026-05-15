@@ -45,7 +45,7 @@ export default function App() {
               {formatTime(timer)}
             </div>
             <div className="w-full h-4 bg-pink-50 rounded-full mt-8 overflow-hidden border-2 border-pink-100 max-w-md">
-              <motion.div 
+              <motion.div
                 animate={{ width: `${Math.min((timer / SESSION_LIMIT_SECONDS) * 100, 100)}%` }}
                 className="h-full bg-[#FF8DA1] rounded-full shadow-[0_0_12px_rgba(255,141,161,0.5)]"
               />
@@ -98,7 +98,7 @@ export default function App() {
       <footer className="mt-8 flex justify-between items-center bg-white/40 px-8 py-3 rounded-2xl w-full max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_#4ADE80]"></div>
-          <span className="text-[10px] font-black uppercase opacity-50 tracking-widest">Buddy Sensor Active</span>
+          <span className="text-[10px] font-black uppercase opacity-50 tracking-widest">A long sit make a man sick.</span>
         </div>
         <div className="text-[10px] font-black uppercase opacity-50 tracking-widest tabular-nums">
           Keep it up! (๑•ᴗ•๑)
