@@ -1,0 +1,7 @@
+services:
+  situp-tracker:
+    build: .
+    container_name: sitting-tracker
+    ports:
+      - "5050:80"
+    restart: unless-stopped

@@ -42,8 +42,8 @@ The project features a unique "sticker" look with:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/situp-cute-tracker.git
-    cd situp-cute-tracker
+    git clone https://github.com/tarn4study/sitting-tracker.git
+    cd sitting-tracker
     ```
 
 2.  **Install dependencies:**
@@ -56,6 +56,27 @@ The project features a unique "sticker" look with:
     npm run dev
     ```
     The app will be available at `http://localhost:3000`.
+
+### Docker Deployment
+
+You can self-host this app using Docker for a more permanent setup.
+
+#### Using Docker Compose (Recommended)
+1. Build and start the container:
+   ```bash
+   docker-compose up -d --build
+   ```
+2. Access the app at `http://localhost:5050`.
+
+#### Using Docker CLI
+1. Build the image:
+   ```bash
+   docker build -t sitting-tracker .
+   ```
+2. Run the container:
+   ```bash
+   docker run -d -p 5050:80 --name sitting-tracker sitting-tracker
+   ```
 
 
 ## 📁 Project Structure
