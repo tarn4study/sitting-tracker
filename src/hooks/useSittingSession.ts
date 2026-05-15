@@ -60,6 +60,12 @@ export const useSittingSession = () => {
     }
   };
 
+  const deleteSession = (id: string) => {
+    const updatedHistory = history.filter(session => session.id !== id);
+    setHistory(updatedHistory);
+    localStorage.setItem('sitHistory', JSON.stringify(updatedHistory));
+  };
+
   return {
     status,
     selectedTask,
@@ -68,6 +74,7 @@ export const useSittingSession = () => {
     history,
     showAlert,
     setShowAlert,
-    toggleStatus
+    toggleStatus,
+    deleteSession
   };
 };

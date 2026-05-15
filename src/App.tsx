@@ -17,7 +17,8 @@ export default function App() {
     history,
     showAlert,
     setShowAlert,
-    toggleStatus
+    toggleStatus,
+    deleteSession
   } = useSittingSession();
 
   return (
@@ -89,7 +90,7 @@ export default function App() {
           </div>
         </main>
 
-        <HistorySidebar history={history} />
+        <HistorySidebar history={history} onDelete={deleteSession} />
       </div>
 
       <AlertPopup isVisible={showAlert} onClose={() => setShowAlert(false)} />
