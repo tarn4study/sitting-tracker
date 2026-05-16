@@ -42,8 +42,16 @@ export const useSittingSession = () => {
 
   const toggleStatus = () => {
     if (status === 'sitting') {
+      // Fallback for crypto.randomUUID() which requires a Secure Context (HTTPS or localhost)
+      const generateId = () => {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          return crypto.randomUUID();
+        }
+        return Date.now().toString(36) + Math.random().toString(36).substring(2);
+      };
+
       const newSession: Session = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         task: selectedTask,
         duration: timer,
         timestamp: Date.now(),
