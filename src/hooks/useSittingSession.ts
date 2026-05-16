@@ -8,8 +8,8 @@ export const useSittingSession = () => {
   const [timer, setTimer] = useState(0);
   const [history, setHistory] = useState<Session[]>([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [shouldPlayAlertSound, setShouldPlayAlertSound] = useState(false);
   
-  // Track the timestamp when the session started
   const startTimeRef = useRef<number | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -26,19 +26,18 @@ export const useSittingSession = () => {
 
   useEffect(() => {
     if (status === 'sitting') {
-      // Set the start time if it's not already set
       if (!startTimeRef.current) {
         startTimeRef.current = Date.now();
       }
 
       timerIntervalRef.current = setInterval(() => {
         if (startTimeRef.current) {
-          // Calculate elapsed time based on absolute system clock
           const elapsedSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
           setTimer(elapsedSeconds);
           
           if (elapsedSeconds >= SESSION_LIMIT_SECONDS && !showAlert) {
             setShowAlert(true);
+            setShouldPlayAlertSound(true);
           }
         }
       }, 1000);
@@ -54,7 +53,6 @@ export const useSittingSession = () => {
 
   const toggleStatus = () => {
     if (status === 'sitting') {
-      // Fallback for crypto.randomUUID() which requires a Secure Context (HTTPS or localhost)
       const generateId = () => {
         if (typeof crypto !== 'undefined' && crypto.randomUUID) {
           return crypto.randomUUID();
@@ -75,9 +73,11 @@ export const useSittingSession = () => {
       setTimer(0);
       setStatus('standing');
       startTimeRef.current = null;
+      setShouldPlayAlertSound(false);
     } else {
       setStatus('sitting');
       setShowAlert(false);
+      setShouldPlayAlertSound(false);
       startTimeRef.current = Date.now();
     }
   };
@@ -96,6 +96,8 @@ export const useSittingSession = () => {
     history,
     showAlert,
     setShowAlert,
+    shouldPlayAlertSound,
+    setShouldPlayAlertSound,
     toggleStatus,
     deleteSession
   };

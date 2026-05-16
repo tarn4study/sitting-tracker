@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import React from 'react';
 import { motion } from 'motion/react';
 import { useSittingSession } from './hooks/useSittingSession';
+import { useAudio } from './hooks/useAudio';
 import { Character } from './components/ui/Character';
 import { TaskButton } from './components/ui/TaskButton';
 import { HistorySidebar } from './components/HistorySidebar';
@@ -17,9 +19,33 @@ export default function App() {
     history,
     showAlert,
     setShowAlert,
+    shouldPlayAlertSound,
+    setShouldPlayAlertSound,
     toggleStatus,
     deleteSession
   } = useSittingSession();
+
+  // Sound placeholders
+  const sitSound = useAudio('/sounds/sit.mp3');
+  const standSound = useAudio('/sounds/stand.mp3');
+  const alertSound = useAudio('/sounds/alert.mp3');
+
+  // Trigger alert sound when requested by the hook
+  useEffect(() => {
+    if (shouldPlayAlertSound) {
+      alertSound.play();
+      setShouldPlayAlertSound(false);
+    }
+  }, [shouldPlayAlertSound, alertSound, setShouldPlayAlertSound]);
+
+  const handleSitStand = () => {
+    if (status === 'standing') {
+      sitSound.play();
+    } else {
+      standSound.play();
+    }
+    toggleStatus();
+  };
 
   return (
     <div className="min-h-screen bg-[#FFF0F5] text-[#5D4E56] font-sans flex flex-col p-6 md:p-10 overflow-hidden relative border-[12px] border-white">
@@ -72,7 +98,7 @@ export default function App() {
             <motion.button
               whileHover={{ scale: 1.02, y: 4 }}
               whileTap={{ scale: 0.98, y: 8 }}
-              onClick={() => status === 'standing' && toggleStatus()}
+              onClick={handleSitStand}
               disabled={status === 'sitting'}
               className={`flex-1 bg-[#4ADE80] text-white text-3xl font-black py-8 rounded-[40px] shadow-[0_12px_0_#22C55E] border-4 border-white uppercase italic tracking-wider transition-all ${status === 'sitting' ? 'opacity-30 grayscale cursor-not-allowed shadow-none translate-y-3' : ''}`}
             >
@@ -81,7 +107,7 @@ export default function App() {
             <motion.button
               whileHover={{ scale: 1.02, y: 4 }}
               whileTap={{ scale: 0.98, y: 8 }}
-              onClick={() => status === 'sitting' && toggleStatus()}
+              onClick={handleSitStand}
               disabled={status === 'standing'}
               className={`flex-1 bg-[#FB7185] text-white text-3xl font-black py-8 rounded-[40px] shadow-[0_12px_0_#E11D48] border-4 border-white uppercase italic tracking-wider transition-all ${status === 'standing' ? 'opacity-30 grayscale cursor-not-allowed shadow-none translate-y-3' : ''}`}
             >
