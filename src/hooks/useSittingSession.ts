@@ -8,7 +8,10 @@ export const useSittingSession = () => {
   const [timer, setTimer] = useState(0);
   const [history, setHistory] = useState<Session[]>([]);
   const [showAlert, setShowAlert] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Track the timestamp when the session started
+  const startTimeRef = useRef<number | null>(null);
+  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('sitHistory');
@@ -23,22 +26,31 @@ export const useSittingSession = () => {
 
   useEffect(() => {
     if (status === 'sitting') {
-      timerRef.current = setInterval(() => {
-        setTimer(prev => {
-          const next = prev + 1;
-          if (next === SESSION_LIMIT_SECONDS) {
+      // Set the start time if it's not already set
+      if (!startTimeRef.current) {
+        startTimeRef.current = Date.now();
+      }
+
+      timerIntervalRef.current = setInterval(() => {
+        if (startTimeRef.current) {
+          // Calculate elapsed time based on absolute system clock
+          const elapsedSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
+          setTimer(elapsedSeconds);
+          
+          if (elapsedSeconds >= SESSION_LIMIT_SECONDS && !showAlert) {
             setShowAlert(true);
           }
-          return next;
-        });
+        }
       }, 1000);
     } else {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      startTimeRef.current = null;
     }
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
     };
-  }, [status]);
+  }, [status, showAlert]);
 
   const toggleStatus = () => {
     if (status === 'sitting') {
@@ -62,9 +74,11 @@ export const useSittingSession = () => {
       localStorage.setItem('sitHistory', JSON.stringify(updatedHistory));
       setTimer(0);
       setStatus('standing');
+      startTimeRef.current = null;
     } else {
       setStatus('sitting');
       setShowAlert(false);
+      startTimeRef.current = Date.now();
     }
   };
 
